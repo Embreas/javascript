@@ -1,41 +1,65 @@
-//variables globales
-let carrito = '';
-let total = 0;
+const carrito = []; //array
+function agregar_producto(nombre, precio) { //funcion para agregar el producto
+  carrito.push({ nombre, precio }); //agregar al carrito el objeto
+  total += precio; //update de precio
+}
 
-//carrito - agregar producto
-function agregar_producto() {
-  const nombre = prompt('ingresar el nombre del producto:'); //pedir nombre del producto
-  const precio = parseFloat(prompt('ingresar el precio:')); //pedir valor del producto
-  if (isNaN(precio)) { //chequear que el precio sea un numero
-    alert('el precio ingresado no es valido');
-    return;
+function mostrar_carrito() { //mostrar el contenido del carritoo
+  let mensaje = "carrito de compras:\n\n";
+  for (const producto of carrito) {
+    mensaje += `${producto.nombre} - $${producto.precio}\n`;
   }
-  carrito += `${nombre} - $${precio}\n`; //agrega el producto al carrito
-  total += precio; //actualiza el total
-  alert(`producto agregado al carrito:\n\n${carrito}\ntotal: $${total.toFixed(2)}`); //mostrar carrito actualizado
+  alert(mensaje);
 }
 
-//compra - terminar la compra
-function finalizarCompra() {
-  alert(`carrito de compras:\n\n${carrito}\ntotal: $${total.toFixed(2)}`); //mostrar carrito y total
-  carrito = ''; //reinicia el carrito
-  total = 0; //reinicia el total
+function mostrar_total() { //mostrar el total
+  alert(`Total: $${total.toFixed(2)}`);
 }
+
+let total = 0; //global variable total
 
 while (true) {
-  const user_opcion = parseInt(prompt("seleccione una opcion:\n1. agregar producto\n2. finalizar compra\n"));
-  switch (user_opcion) {
-    case 1: //caso 1 funcion agregar producto
-      agregar_producto();
+  const opcion = parseInt(
+    prompt(
+      `seleccionar una opcion:
+      1 agregar producto
+      2 mostrar carrito
+      3 chequear total
+      4 terminar`
+    )
+  );
+
+  switch (opcion) {
+    case 1:
+      const nombre_producto = prompt("ingresar el producto que desea comprar:");
+      const precio_producto = parseFloat(
+        prompt("ingresar el precio:")
+      );//validar si es correcto
+      if (isNaN(precio_producto)) { 
+        alert("el precio ingresado no es correcto");
+      } else { 
+        agregar_producto(nombre_producto, precio_producto);
+        alert("producto agregado al carrito");
+      }
       break;
-    case 2: //caso 2 finalizar compra
-      finalizarCompra();
+    case 2://mostrar el carrito actualizado
+      if (carrito.length === 0) { 
+        alert("el carrito esta vacio");
+      } else {
+        mostrar_carrito();
+      }
       break;
-    default: //default indicando error
-      alert("valor seleccionado incorrecto, seleccione una opcion valida");
+    case 3://mostrar el total actualizado
+      mostrar_total(); 
+      break;
+    case 4://salir del programa
+      alert("gracias por su compra"); 
+      break;
+    default:
+      alert("opcion no valida, favor elegir una opcion nuevamente");
       break;
   }
-  if (user_opcion === 2) {
-    break; //salir del bucle dentro de while 
+  if (opcion === 4){
+    break;
   }
 }
